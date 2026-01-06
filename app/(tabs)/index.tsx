@@ -1,14 +1,25 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { Link } from 'expo-router';
+import { FlatList, Pressable, StyleSheet } from 'react-native';
 
-export default function TabOneScreen() {
+const ITEMS = Array.from({ length: 10 }, (_, i) => i + 1);
+
+export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Text style={styles.title}>Items</Text>
+
+      <FlatList
+        data={ITEMS}
+        keyExtractor={(item) => item.toString()}
+        renderItem={({ item }) => (
+          <Link href={`/details/${item}`} asChild>
+            <Pressable style={styles.item}>
+              <Text>Go to Item #{item}</Text>
+            </Pressable>
+          </Link>
+        )}
+      />
     </View>
   );
 }
@@ -16,16 +27,17 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 16,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 16,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  item: {
+    padding: 16,
+    marginBottom: 12,
+    borderRadius: 8,
+    backgroundColor: '#ddd',
   },
 });
